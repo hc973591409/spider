@@ -15,7 +15,7 @@ class ItcastspiderSpider(scrapy.Spider):
         """
             response 就是请求之后返回的源码
         """
-        items = []
+        # items = []
         # 在srapy中可以直接用xpah对返回文件处理，不需要etree
         node_list = response.xpath('//div[@class="li_txt"]')
         for each in node_list:
@@ -26,8 +26,10 @@ class ItcastspiderSpider(scrapy.Spider):
             item['teach_name'] = each.xpath('.//h3/text()').extract()[0]
             item['teach_title'] = each.xpath('.//h4/text()').extract()[0]
             item['teach_info'] = each.xpath('.//p/text()').extract()[0]
-            items.append(item)
+            # items.append(item)
+            # yield把数据返回给管道处理，直到下一次管道再次请求数据，就再次执行
+            yield item
         
-        with open('teach.csv', 'w', encoding='gbk') as f:
-            f.write(str(items))
+        # with open('teach.csv', 'w', encoding='gbk') as f:
+        #     f.write(str(items))
 
